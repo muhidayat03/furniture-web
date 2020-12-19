@@ -1,9 +1,9 @@
 import React from 'react'
+import styled, { keyframes } from 'styled-components';
 import LogoImage from '../assets/fabelio-icon-bg.png';
 import LogoIcon1 from '../assets/fabelio-icon-1.png';
 import LogoIcon2 from '../assets/fabelio-icon-2.png';
 import LogoIcon3 from '../assets/fabelio-icon-3.png';
-import styled, { keyframes } from 'styled-components';
 
 let Loading = ({ isLoaded }) =>
   <LoadingBackground isLoaded={isLoaded} >
@@ -14,8 +14,6 @@ let Loading = ({ isLoaded }) =>
       <ImageIcon src={LogoIcon3} style={{ left: '60%', top: '45%', animationDelay: '0.3s' }} alt='fab-icon'/>
     </LoadingItemContainer>
   </LoadingBackground>
-
-
 
 const updown = keyframes`
   0% {
@@ -43,9 +41,9 @@ const inout = keyframes`
 `;
 
 const LoadingItemContainer = styled.div`
-animation: ${inout} 3s ease infinite;
-position: 'relative';
-height: 180px;
+  animation: ${inout} 3s ease infinite;
+  position: 'relative';
+  height: 180px;
 `;
 
 const ImageIcon = styled.img`
@@ -67,6 +65,5 @@ const LoadingBackground = styled.div`
   visibility: ${({ isLoaded }) => isLoaded ? 'hidden' : 'visible'};
   transition: opacity 1s, visibility 0.5s linear 1s; 
 `;
-
 
 export default Loading;

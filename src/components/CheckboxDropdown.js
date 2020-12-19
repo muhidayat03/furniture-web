@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import styled from 'styled-components'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import styled from 'styled-components'
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const CheckboxDropdown = ({ title, onChange, list, }) => {
 
@@ -27,7 +27,6 @@ const CheckboxDropdown = ({ title, onChange, list, }) => {
         window.removeEventListener('click', close);
       }
     }, 0);
-
     return () => {
       window.removeEventListener('click', close);
     };
@@ -106,8 +105,8 @@ const DropdownList = styled.div`
   padding: 15px 0;
   background-color: white;
   position: absolute;
-  width: 100%;
-  box-shadow: 0 2px 5px -1px rgb(232, 232, 232);
+  width: 100%; 
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
   z-index: 99;
   .MuiFormControlLabel-labelPlacementStart{
     margin-left : 0 !important;

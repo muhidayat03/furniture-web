@@ -1,156 +1,150 @@
-import './App.css';
-import TextField from '@material-ui/core/TextField';
-import React, { useState } from 'react'
-import CheckboxDropdown from './components/CheckboxDropdown';
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
-import CardItem from './components/CardItem'
+import TextField from '@material-ui/core/TextField';
+import CheckboxDropdown from './components/CheckboxDropdown';
+import CardItem from './components/CardItem';
+import Loading from './components/Loading';
+import './App.css';
+
+import { useSelector, useDispatch } from "react-redux";
+import { listFurniture, setInputFilter } from './actions/furniture_action';
 
 function App() {
+  const dispatch = useDispatch();
 
-  const locationList = [
-    {
-      id: 0,
-      title: 'New York',
-      selected: false,
-      key: 'location',
-    },
+  let deliveryList = [
     {
       id: 1,
-      title: 'Dublin',
+      title: '1 Weeks',
       selected: false,
       key: 'location',
     },
     {
       id: 2,
-      title: 'California',
+      title: '1 Weeks',
       selected: false,
       key: 'location',
     },
     {
       id: 3,
-      title: 'Istanbul',
+      title: '1 Month',
       selected: false,
       key: 'location',
     },
     {
       id: 4,
-      title: 'Izmir',
-      selected: false,
-      key: 'location',
-    },
-    {
-      id: 5,
-      title: 'Oslo',
-      selected: false,
-      key: 'location',
-    },
-    {
-      id: 6,
-      title: 'Zurich',
+      title: 'more than 1 month',
       selected: false,
       key: 'location',
     },
   ];
 
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [searchInput, setseachInput] = useState('');
+  const [styleOptions, setStyleOptions] = useState([]);
+  const [deliveryeOptions, setDeliverOptions] = useState(deliveryList);
 
 
-  let products = [
-    {
-      "name": "Sofa L Jobi",
-      "description": "Selama Anda dapat berkumpul bersama keluarga dan orang-orang terdekat, duduk di manapun mungkin rasanya tidak menjadi masalah untuk Anda. Akan tetapi, dengan berkumpul bersama menggunakan Jobi L Sofa, suasana quality time Anda akan terasa 180 derajat perubahannya.",
-      "furniture_style": ["Classic", "Midcentury"],
-      "delivery_time": "14",
-      "price": 5000000
-    },
-    {
-      "name": "Sofa L Vienna",
-      "description": "Apapun kegiatan ataupun peran Anda dalam kehidupan berumah tangga, setiap orang membutuhkan tempat nyaman untuk sejenak mengambil napas. Biarkanlah Wina L Sofa menjadi tempat Anda untuk sepenuhnya melupakan segala kesibukan dan hiruk-pikuk keseharian.",
-      "furniture_style": ["Midcentury", "Contemporary"],
-      "delivery_time": "2",
-      "price": 7999000
-    },
-    {
-      "name": "Sofa L Arsa Wooden Leg",
-      "description": "Arsa 'L' Sofa dengan kaki kayu adalah gabungan dari sofa 2 seater dan 1 sofa memanjang yang cocok ditaruh ditengah maupun dipojok ruangan anda. Keseluruhan sofa didominasi oleh bantalan dengan busa khusus indoor dengan aksen kaki kayu. Cushion isi dacron yang ditambahkan pada sandaran punggung sofa menambah kenyamanan. Jangan heran bila Anda mudah terlelap di atas sofa ini.",
-      "furniture_style": ["Scandinavian", "Modern"],
-      "delivery_time": "7",
-      "price": 9499000
-    },
-    {
-      "name": "Sofa L Helena",
-      "description": "Bagaimana pun style dekorasi hunian, pemilihan warna netral seperti hitam dan putih tak pernah salah. Warna ini dapat berbaur dengan cantik dan memberikan keseimbangan tampilan agar rumah tetap terlihat elegan. Bagi Anda yang menyukai sentuhan warna monokrom pada furnitur, Helena L Sofa tak boleh dilewatkan.",
-      "furniture_style": ["Modern", "Contemporary"],
-      "delivery_time": "2",
-      "price": 7499000
-    },
-    {
-      "name": "Forbyta Sofa Bed",
-      "description": "Menikmati waktu liburan sambil bersantai memang paling pas dilakukan di rumah. Suasana rumah yang nyaman dan tenang akan membuat liburan semakin sempurna. Waktu santai di rumah akan membuat tubuh semakin rileks bila disempurnakan dengan furnitur yang pas. Forbyta Sofa Bed hadir sebagai penyempurna waktu santai Anda di rumah.",
-      "furniture_style": ["Midcentury"],
-      "delivery_time": "28",
-      "price": 8999000
-    },
-    {
-      "name": "Sofa Bed Acronap",
-      "description": "Menikmati waktu liburan sambil bersantai memang paling pas dilakukan di rumah. Suasana rumah yang nyaman dan tenang akan membuat liburan semakin sempurna. Waktu santai di rumah akan membuat tubuh semakin rileks bila disempurnakan dengan furnitur yang pas. Forbyta Sofa Bed hadir sebagai penyempurna waktu santai Anda di rumah.",
-      "furniture_style": ["Classic"],
-      "delivery_time": "1",
-      "price": 4999000
-    },
-    {
-      "name": "Sofa L Wina",
-      "description": "Apapun kegiatan ataupun peran Anda dalam kehidupan berumah tangga, setiap orang membutuhkan tempat nyaman untuk sejenak mengambil napas. Biarkanlah Wina L Sofa menjadi tempat Anda untuk sepenuhnya melupakan segala kesibukan dan hiruk-pikuk keseharian.",
-      "furniture_style": ["Scandinavian"],
-      "delivery_time": "12",
-      "price": 8999000
+  const onInpuChange = (e) => {
+    setseachInput(e.target.value)
+  };
+
+  const { products, furnitureStyles } = useSelector((state) => state.listFurniture);
+
+  const filteredProducts = products.filter(({ name, furniture_style, delivery_type }) => {
+    if (searchInput) {
+      if (!name.toLowerCase().includes(searchInput.toLowerCase())) {
+        return false
+      }
     }
-  ];
 
-  const [location, setLocation] = useState(locationList)
+    if (styleOptions.filter(item => item.selected === true).length !== 0) {
+      let filteredStyle = styleOptions.filter(item => {
+        return item.selected && furniture_style.indexOf(item.title) !== -1
+      });
+      if (filteredStyle.length === 0) {
+        return false
+      }
+    }
 
+    let selectedDelivery = deliveryeOptions.filter(item => item.selected === true).map(({ id }) => id)
+    if (selectedDelivery.length !== 0) {
+      if (selectedDelivery.indexOf(delivery_type) === -1) {
+        return false;
+      }
+    }
 
+    return true;
+  });
 
-  const handleListChange = (e) => {
-    let location_temp = [...location];
-    let index = location.findIndex(({ id }) => id === Number(e.target.name));
+  if (styleOptions.length === 0 && furnitureStyles.length !== 0) {
+    let options = furnitureStyles.map((item, i) => ({ id: i, title: item, selected: false }))
+    setStyleOptions(options);
+  };
+
+  const handleStyleChange = (e) => {
+    let temp = [...styleOptions];
+    let index = styleOptions.findIndex(({ id }) => id === Number(e.target.name));
     if (index !== -1) {
-      location_temp[index].selected = !location_temp[index].selected;
-      setLocation(location_temp);
+      temp[index].selected = !temp[index].selected;
+      setStyleOptions(temp);
     }
-  }
+  };
+
+  const handleDeliveryChange = (e) => {
+    let temp = [...deliveryeOptions];
+    let index = deliveryeOptions.findIndex(({ id }) => id === Number(e.target.name));
+    if (index !== -1) {
+      temp[index].selected = !temp[index].selected;
+      setDeliverOptions(temp);
+    }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      await dispatch(listFurniture());
+      setTimeout(() => setIsLoaded(true), 200);
+    };
+    getData();
+  }, [dispatch]);
+
+  const productItem = filteredProducts.map((item, i) => <ContentContainer key={i}>
+    <article style={{ height: '100%' }}>
+      <CardItem data={item} />
+    </article>
+  </ContentContainer>
+  );
 
   return (
     <div>
+      <Loading isLoading isLoaded={isLoaded}></Loading>
       <header style={{ backgroundColor: '#116BC8' }}>
         <Container style={{ alignItems: 'flex-end' }}>
           <ContentContainer>
-            <TextField id="standard-basic" label="Search Furniture" fullWidth style={{ marginBottom: 20 }} />
+            <TextField onChange={onInpuChange} value={searchInput} id="standard-basic" label="Search Furniture" fullWidth style={{ marginBottom: 20 }} />
             <CheckboxDropdown style={{ marginTop: 20 }}
-              title="Select location"
-              list={location}
-              onChange={handleListChange}
+              title="Furniture Style"
+              list={styleOptions}
+              onChange={handleStyleChange}
             />
           </ContentContainer>
           <ContentContainer>
             <CheckboxDropdown style={{ marginTop: 20 }}
-              title="Select location"
-              list={location}
-              onChange={handleListChange}
+              title="Delivery Time"
+              list={deliveryeOptions}
+              onChange={handleDeliveryChange}
             />
           </ContentContainer>
         </Container>
       </header>
       <section>
         <Container style={{ alignItems: 'stretch' }}>
-          {products.map(item => <ContentContainer>
-            <CardItem data={item} />
-          </ContentContainer>
-          )}
+          {productItem}
         </Container>
       </section>
     </div >
   );
-}
+};
 
 const Container = styled.div`
   padding: 20px;
@@ -167,14 +161,9 @@ const ContentContainer = styled.div`
   @media(max-width: 480px){
     width: 100%;
   }
-
   .MuiPaper-root.MuiCard-root{
     height: 100%
   }
 `;
-
-
-
-
 
 export default App;

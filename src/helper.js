@@ -3,26 +3,22 @@ export const deliveryList = [
   {
     id: 1,
     title: '1 Weeks',
-    selected: false,
-    key: 'location',
+    selected: false, 
   },
   {
     id: 2,
-    title: '1 Weeks',
-    selected: false,
-    key: 'location',
+    title: '2 Weeks',
+    selected: false, 
   },
   {
     id: 3,
     title: '1 Month',
-    selected: false,
-    key: 'location',
+    selected: false, 
   },
   {
     id: 4,
     title: 'more than 1 month',
-    selected: false,
-    key: 'location',
+    selected: false, 
   },
 ];
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
+
 const format = (number) => {
   return 'Rp ' + number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + ',00'
 }

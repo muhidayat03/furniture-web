@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import CheckboxDropdown from './components/CheckboxDropdown';
+import ImageState from './components/ImageState';
 import CardItem from './components/CardItem';
 import Loading from './components/Loading';
 import './App.css';
 
 import { useSelector, useDispatch } from "react-redux";
-import { listFurniture, setInputFilter } from './actions/furniture_action';
+import { listFurniture } from './actions/furniture_action';
 
 function App() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ function App() {
     setseachInput(e.target.value)
   };
 
-  const { products, furnitureStyles } = useSelector((state) => state.listFurniture);
+  const { products, furnitureStyles, error } = useSelector((state) => state.listFurniture);
 
   const filteredProducts = products.filter(({ name, furniture_style, delivery_type }) => {
     if (searchInput) {
@@ -108,12 +109,21 @@ function App() {
     getData();
   }, [dispatch]);
 
-  const productItem = filteredProducts.map((item, i) => <ContentContainer key={i}>
-    <article style={{ height: '100%' }}>
-      <CardItem data={item} />
-    </article>
-  </ContentContainer>
-  );
+  const productItem = filteredProducts.length !== 0
+    ? filteredProducts.map((item, i) => <ContentContainer key={i}>
+      <article style={{ height: '100%' }}>
+        <CardItem data={item} />
+      </article>
+    </ContentContainer>)
+    : <Container>
+      <ImageState />
+    </Container>;
+
+  if (error) {
+    return <Container>
+      <ImageState type='error' />
+    </Container>
+  }
 
   return (
     <div>

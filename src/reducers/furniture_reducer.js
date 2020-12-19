@@ -7,14 +7,8 @@ import {
 const initialState = {
   pending: false,
   error: null,
-  products: [],
-  filteredProducts: [],
-  furnitureStyles: [],
-  filter: {
-    text: '',
-    furnitureStyles: [],
-    deliveryType: []
-  }
+  products: [], 
+  furnitureStyles: [],  
 };
 
 
@@ -29,8 +23,7 @@ export function listFurniture(state = initialState, action) {
       return {
         ...state,
         pending: false,
-        products: action.data.products,
-        filteredProducts: action.data.products,
+        products: action.data.products, 
         furnitureStyles: action.data.furniture_styles
       };
     case LIST_FURNITURE_ERROR:

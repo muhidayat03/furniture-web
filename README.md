@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Fetching data : axios
 
 ## Demo
-Demo can be accessed [here](http://fabelio.muhidayat03.com/)
+Demo can be accessed [here](http://fabelio.muhidayat03.online/)
 
 ## Installation and Setup Instructions
 

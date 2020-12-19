@@ -8,10 +8,10 @@ import styled, { keyframes } from 'styled-components';
 let Loading = ({ isLoaded }) =>
   <LoadingBackground isLoaded={isLoaded} >
     <LoadingItemContainer>
-      <img src={LogoImage} style={{ height: '100%' }} />
-      <ImageIcon src={LogoIcon1} style={{ left: '23%', top: '45%', animationDelay: '0.1s' }} />
-      <ImageIcon src={LogoIcon2} style={{ left: '41%', top: '45%', animationDelay: '0.5s' }} />
-      <ImageIcon src={LogoIcon3} style={{ left: '60%', top: '45%', animationDelay: '0.3s' }} />
+      <img src={LogoImage} style={{ height: '100%' }} alt='fab-icon-bg'/>
+      <ImageIcon src={LogoIcon1} style={{ left: '23%', top: '45%', animationDelay: '0.1s' }} alt='fab-icon'/>
+      <ImageIcon src={LogoIcon2} style={{ left: '41%', top: '45%', animationDelay: '0.5s' }} alt='fab-icon'/>
+      <ImageIcon src={LogoIcon3} style={{ left: '60%', top: '45%', animationDelay: '0.3s' }} alt='fab-icon'/>
     </LoadingItemContainer>
   </LoadingBackground>
 

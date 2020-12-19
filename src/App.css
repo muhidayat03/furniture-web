@@ -1,1 +1,16 @@
+ *{
+   box-sizing: border-box;
+ }
+
+ .MuiInputBase-input{
+   color: white !important;
+ }
+
+ .MuiFormLabel-root{
+  color: white !important;
+ }
+
+.MuiInput-underline:before, .MuiInput-underline::after {
+  border-bottom: 2px solid white !important;
+}
  

@@ -6,6 +6,7 @@ import LogoIcon2 from '../assets/fabelio-icon-2.png';
 import LogoIcon3 from '../assets/fabelio-icon-3.png';
 import { updown, inout } from './Animation';
 
+export let LoadingImage = [LogoImage, LogoIcon1, LogoIcon2,LogoIcon3 ];
 
 let Loading = ({ isLoaded }) =>
   <LoadingBackground isLoaded={isLoaded} >

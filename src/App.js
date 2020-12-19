@@ -4,42 +4,15 @@ import TextField from '@material-ui/core/TextField';
 import CheckboxDropdown from './components/CheckboxDropdown';
 import ImageState from './components/ImageState';
 import CardItem from './components/CardItem';
-import Loading from './components/Loading';
+import Loading, { LoadingImage } from './components/Loading';
 import './App.css';
 
 import { useSelector, useDispatch } from "react-redux";
 import { listFurniture } from './actions/furniture_action';
+import { deliveryList, loadImage } from './helper'
 
 function App() {
   const dispatch = useDispatch();
-
-  let deliveryList = [
-    {
-      id: 1,
-      title: '1 Weeks',
-      selected: false,
-      key: 'location',
-    },
-    {
-      id: 2,
-      title: '1 Weeks',
-      selected: false,
-      key: 'location',
-    },
-    {
-      id: 3,
-      title: '1 Month',
-      selected: false,
-      key: 'location',
-    },
-    {
-      id: 4,
-      title: 'more than 1 month',
-      selected: false,
-      key: 'location',
-    },
-  ];
-
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchInput, setseachInput] = useState('');
   const [styleOptions, setStyleOptions] = useState([]);
@@ -101,8 +74,10 @@ function App() {
     }
   };
 
+
   useEffect(() => {
     const getData = async () => {
+      await Promise.all(LoadingImage.map(image => loadImage(image)))
       await dispatch(listFurniture());
       setTimeout(() => setIsLoaded(true), 200);
     };
